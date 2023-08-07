@@ -5,9 +5,10 @@ import {
   CatImage,
   UpdateFilter,
 } from './filters.actions';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { tap, Observable, BehaviorSubject } from 'rxjs';
+import { API_BASE_URL } from '../app.module';
 
 @State<CatFiltersModel>({
   name: 'filterState',
@@ -24,15 +25,21 @@ export class CatsState {
 
   isCatsImagesLoading$ = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(API_BASE_URL) private baseUrl: string
+  ) {}
 
   @Selector() static getCats(state: CatFiltersModel): CatImage[] {
     return state.catsImages;
   }
 
   @Action(UpdateFilter)
-  getCats(ctx: StateContext<CatFiltersModel>, queryParams: any) {
-    const url = 'https://api.thecatapi.com/v1/images/search';
+  getCats(
+    ctx: StateContext<CatFiltersModel>,
+    queryParams: { [key: string]: any }
+  ) {
+    const url = `${this.baseUrl}/images/search`;
 
     let params = new HttpParams();
     if (queryParams) {
@@ -54,7 +61,7 @@ export class CatsState {
   }
 
   getAllBreeds(): Observable<Breed[]> {
-    const url = 'https://api.thecatapi.com/v1/breeds';
+    const url = `${this.baseUrl}/breeds`;
 
     return this.http.get<Breed[]>(url);
   }
