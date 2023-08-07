@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="filters">
+    <ng-container [formGroup]="filtersFormGroup">
+      <ng-container *ngIf="catBreeds$ | async as catBreeds">
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="catBreed">
+            <ng-container *ngFor="let catBreed of catBreeds">
+              <mat-option [value]="catBreed.id">
+                {{ catBreed.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <mat-form-field appearance="outline">
+        <input matInput type="number" formControlName="catLimit" />
+      </mat-form-field>
+      <button mat-button (click)="clearAllFilters()">Clear Filters</button>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="catsImages$ | async as catImages; else loading">
+    <ng-container *ngIf="!(isLoading | async); else loading">
+      <div class="cats-container">
+        <ng-container *ngFor="let catImage of catImages; trackBy: trackById">
+          <img [src]="catImage.url" />
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #loading>
+    <div class="spinner-container">
+      <mat-spinner [diameter]="60"></mat-spinner>
+    </div>
+  </ng-template>
+</div>

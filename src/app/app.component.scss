@@ -1,0 +1,23 @@
+.container {
+    padding: 100px;
+}
+//need to override material to align normally
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.cats-container {
+    display: grid;
+    grid-template-columns: 33%  33% 33%;
+     > img {
+        object-fit: cover;
+        width: 100%;
+    }
+}
+.spinner-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
